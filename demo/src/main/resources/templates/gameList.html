@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Game Deals</title>
+</head>
+<body>
+    <h1>Game Deals</h1>
+    <ul>
+        <li th:each="GameDeals : ${GameDeal}">
+            <span th:text="${GameDeals.title}"></span> - 
+            <span th:text="${GameDeals.dealPrice}"></span> (Normal: 
+            <span th:text="${GameDeals.normalPrice}"></span>)
+        </li>
+    </ul>
+</body>
+</html>
