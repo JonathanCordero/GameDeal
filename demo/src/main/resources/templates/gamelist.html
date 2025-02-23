@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Game List</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <p>THIS IS A STATIC TEST MESSAGE</p> <!-- static test -->
+    
+    <div class="container mt-4">
+        <h1 class="text-center">Game List</h1>
+        <div class="row">
+            <div class="col-6 col-md-3" th:each="game : ${games}">
+                <div class="card mb-4">
+                    <img th:src="@{${game.thumb}}" class="card-img-top" alt="Game Thumbnail">
+                    <div class="card-body text-center">
+                        <h5 class="card-title" th:text="${game.title}">Game Name</h5> <!-- Ensure correct property name -->
+                        <p class="card-text" th:text="${game.salePrice}">Price</p> <!-- Ensure correct property name -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

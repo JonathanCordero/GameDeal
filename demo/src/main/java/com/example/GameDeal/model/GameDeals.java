@@ -1,5 +1,7 @@
 package com.example.GameDeal.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -8,8 +10,8 @@ import jakarta.persistence.Table;
 
 @Entity  // Marks this as a database entity
 @Table(name = "game_deals")  // Specifies table name
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class GameDeals {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-increment ID
     private Long id;
@@ -19,6 +21,9 @@ public class GameDeals {
     private double normalPrice;
     private double salePrice;
     private String thumb;
+    private String dealID;
+    private String storeID;
+    private String gameID;
 
     // Default constructor
     public GameDeals() {}
@@ -42,12 +47,21 @@ public class GameDeals {
     public String getStore() { return store; }
     public void setStore(String store) { this.store = store; }
 
-    public double getnormalPrice() { return normalPrice; }
-    public void setnormalPrice(double normalPrice) { this.normalPrice = normalPrice; }
+    public double getNormalPrice() { return normalPrice; }
+    public void setNormalPrice(double normalPrice) { this.normalPrice = normalPrice; }
 
-    public double getsalePrice() { return salePrice; }
-    public void setsalePrice(double salePrice) { this.salePrice = salePrice; }
+    public double getSalePrice() { return salePrice; }
+    public void setSalePrice(double salePrice) { this.salePrice = salePrice; }
 
-    public String getthumb() { return thumb; }
-    public void setthumb(String thumb) { this.thumb = thumb; }
+    public String getThumb() { return thumb; }
+    public void setThumb(String thumb) { this.thumb = thumb; }
+    
+    public String getDealID() { return dealID; }
+    public void setDealID(String dealID) { this.dealID = dealID; }
+
+    public String getStoreID() { return storeID; }
+    public void setStoreID(String storeID) { this.storeID = storeID; }
+
+    public String getGameID() { return gameID; }
+    public void setGameID(String gameID) { this.gameID = gameID; }
 }
