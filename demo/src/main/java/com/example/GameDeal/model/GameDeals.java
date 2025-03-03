@@ -8,12 +8,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-@Entity  // Marks this as a database entity
-@Table(name = "game_deals")  // Specifies table name
+@Entity 
+@Table(name = "game_deals")  
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GameDeals {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-increment ID
+    @GeneratedValue(strategy = GenerationType.IDENTITY) 
     private Long id;
 
     private String title;
@@ -25,10 +25,10 @@ public class GameDeals {
     private String storeID;
     private String gameID;
 
-    // Default constructor
+   
     public GameDeals() {}
 
-    // Constructor for easy object creation
+    
     public GameDeals(String title, String store, double normalPrice, double salePrice, String thumb) {
         this.title = title;
         this.store = store;
@@ -37,7 +37,7 @@ public class GameDeals {
         this.thumb = thumb;
     }
 
-    // Getters and Setters
+    
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
