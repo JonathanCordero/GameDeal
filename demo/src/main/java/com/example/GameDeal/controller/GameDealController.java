@@ -51,6 +51,7 @@ public class GameDealController {
         }
         
         model.addAttribute("games", new ArrayList<>(cheapestDeals.values()));
+        model.addAttribute("contentTemplate", "gamelist");
         return "layout";
     }
     
@@ -74,7 +75,8 @@ public class GameDealController {
         Optional<GameDeals> game = gameDealsRepository.findById(id);
         if (game.isPresent()) {
             model.addAttribute("game", game.get());
-            return "gamedetails"; 
+            model.addAttribute("contentTemplate", "gamedetails");
+            return "layout"; 
         } else {
             return "redirect:/deals/gamelist";
         }
