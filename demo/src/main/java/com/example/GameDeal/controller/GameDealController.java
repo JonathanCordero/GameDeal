@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -80,6 +81,24 @@ public class GameDealController {
         } else {
             return "redirect:/deals/gamelist";
         }
+    }
+    
+    @GetMapping("/login")
+    public String showLoginPage(Model model) {
+    	model.addAttribute("contentTemplate", "login");
+        return "layout";
+    }
+    
+    @PostMapping("/login")
+    public String handleLogin(@RequestParam String username, @RequestParam String password, Model model) {
+        model.addAttribute("contentTemplate", "success");
+        return "layout";  
+    }
+    
+    @GetMapping("/newUser")
+    public String showNewUserPage(Model model) {
+    	model.addAttribute("contentTemplate", "newUser");
+        return "layout";
     }
     
     @PostConstruct // Test to check if gameIDS are being added properly on launch.
