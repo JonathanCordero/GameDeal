@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -53,22 +54,25 @@ public class CheapSharkService {
             return Collections.emptyList();
         }
         
-        Set<String> existingTitles = new HashSet<>(gameDealsRepository.findAllTitlesAndStores());
+        gameDealsRepository.saveAll(fetchedGames);
 
-        List<GameDeals> newGames = new ArrayList<>();
-        for (GameDeals game : fetchedGames) {
-            String uniqueKey = game.getTitle() + "|" + game.getStore();
-            if (!existingTitles.contains(uniqueKey)) {
-                newGames.add(game);
-            }
-        }
-
-        // It will Save only new games
-        if (!newGames.isEmpty()) {
-            gameDealsRepository.saveAll(newGames);
-        }
-
-        return gameDealsRepository.findAll();
+        dealChecker(fetchedGames);
+        
+        return fetchedGames;
     }
+    
+    public void dealChecker(List<GameDeals>fetchedGames) {
+    	List<GameDeals>current = gameDealsRepository.findAll();
+    	Set<String> fetchedDealsIds = fetchedGames.stream().map(GameDeals::getDealID).collect(Collectors.toSet());
+    	List<GameDeals> deletingDeals = current.stream().filter(deal -> !fetchedDealsIds.contains(deal.getDealID())).collect(Collectors.toList());
+    	gameDealsRepository.deleteAll(deletingDeals);
+    	/*System.out.println("size of fetched deals is " + fetchedGames.size());
+    	System.out.println("size of currentdb " + current.size());
+    	System.out.println("Deleting " + deletingDeals.size() + " expired deals.");
+    	Just meant to log sizes to make deals were deleted properly
+    	*/
+    	
+    }
+    
 
 }

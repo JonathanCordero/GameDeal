@@ -21,8 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/deals")  
@@ -33,7 +31,6 @@ public class GameDealController {
 	
 	@Autowired
 	private GameDealsRepository gameDealsRepository;
-	
 	
     public GameDealController(CheapSharkService cheapSharkService) {
         this.cheapSharkService = cheapSharkService;
@@ -55,9 +52,7 @@ public class GameDealController {
         model.addAttribute("contentTemplate", "gamelist");
         return "layout";
     }
-    
-    
-    
+   
     private String normalizeTitle(String title) {
         title = title.toLowerCase().replace(":", "").trim(); 
         String[] words = title.split("\\s+");
@@ -93,12 +88,6 @@ public class GameDealController {
     public String handleLogin(@RequestParam String username, @RequestParam String password, Model model) {
         model.addAttribute("contentTemplate", "success");
         return "layout";  
-    }
-    
-    @GetMapping("/newUser")
-    public String showNewUserPage(Model model) {
-    	model.addAttribute("contentTemplate", "newUser");
-        return "layout";
     }
     
     @PostConstruct // Test to check if gameIDS are being added properly on launch.
