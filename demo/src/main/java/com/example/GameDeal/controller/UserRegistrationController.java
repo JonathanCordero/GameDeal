@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.GameDeal.model.User;
 import com.example.GameDeal.repository.UserRepository;
+import com.example.GameDeal.service.EmailService;
 import com.example.GameDeal.service.PendingUserService;
 
 @Controller
@@ -20,6 +21,8 @@ public class UserRegistrationController {
 	private UserRepository userRepository;
 	@Autowired
 	private PendingUserService pendingUserService;
+	@Autowired
+	private EmailService emailService;
 	
 	@GetMapping("/newUser")
 	public String showNewUserPage(Model model) {
@@ -35,9 +38,12 @@ public class UserRegistrationController {
 	            return "layout";
 	        }
 	        User newUser = new User(username, email, password); // future iterations should hash the password for security protection.
-	        userRepository.save(newUser);
+	        String token = pendingUserService.savePendingUser(newUser);
+	        String verificationLink = "http://localhost:8080/deals/verify?token=" + token;
+	        emailService.sendVerificationEmail(email, token, verificationLink);
+	        //userRepository.save(newUser);
 
-	        return "redirect:/deals/verify";
+	        return "redirect:/deals/email-sent";
 	    }
 	
 }
