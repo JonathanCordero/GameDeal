@@ -14,7 +14,13 @@
                 <input class="form-control me-2" type="search" placeholder="Search games..." aria-label="Search">
                 <button class="btn btn-outline-light" type="submit">Search</button>
             </form>
-            <div class="navbar-text ms-auto">
+			<div th:if="${loggedInUser!=null">
+				<img th:src="@{/images/default-profile.png}" alt ="Profile Picture" style="width: 40px; height: 40px; border-radius: 50%;">
+				<span th:text="${loggedInUser.username}">Username</span>
+				<a href="/logout">Logout</a>
+			</div>
+			
+            <div th:if="${loggedInUser==null">
 				<a th:href="@{/deals/login}" class="text-light">Login</a>
             </div>
         </div>

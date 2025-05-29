@@ -1,0 +1,7 @@
+<div th:fragment="content">
+	<div class="text-center">
+		<h2>Verification Failed!</h2>
+		<p th:text="${error}">The verification has failed or has expired.</p>
+		<a href="/deals/newUser" class = "btn btn-secondary mt-3">Try again</a>
+	</div>
+</div> 

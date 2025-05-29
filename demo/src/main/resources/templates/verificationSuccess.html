@@ -1,0 +1,9 @@
+<div th:fragment="content">
+	<div class="text-center">
+		<h2>Registration Complete!</h2>
+		<p>Welcome <strong th:text="${username}"></strong>! Your account has been verified</p>
+		<form th:action="@{/deals/login}" method="get">
+			<button type="submit" class="btn btn-primary mt-3">Continue</button>
+		</form>
+	</div>
+</div> 

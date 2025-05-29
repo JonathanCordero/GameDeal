@@ -1,15 +1,18 @@
 package com.example.GameDeal.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.GameDeal.model.GameDeals;
+import com.example.GameDeal.model.User;
 import com.example.GameDeal.repository.GameDealsRepository;
 import com.example.GameDeal.service.CheapSharkService;
 
@@ -34,6 +37,12 @@ public class GameDealController {
 	
     public GameDealController(CheapSharkService cheapSharkService) {
         this.cheapSharkService = cheapSharkService;
+    }
+    
+    @ModelAttribute("loggedIndUser")
+    public User getLoggedInUser(Authentication authentication) {
+    	if (authentication!=null&&authentication.isAuthenticated()) return (User) authentication.getPrincipal();
+    	return null;
     }
     
     @GetMapping("/gamelist")
