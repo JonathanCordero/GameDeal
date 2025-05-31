@@ -23,7 +23,7 @@ public class User implements UserDetails{
 	 @Column(nullable = false)
 	private String password;
 	 @Column(nullable = false)
-	private String profilepic = "/images/default-profile.png";
+	public String profilePic = "/img/defaultProfilePic.png";
 	
 	@ElementCollection
 	private List<String> followedGames;
@@ -40,7 +40,7 @@ public class User implements UserDetails{
     public String getEmail() { return email; }
     public String getUsername() { return username; }
     public String getPassword() { return password; }
-    public String getProfilepicture() {return profilepic;}
+    public String getProfilepicture() {return profilePic;}
     
     public List<String> getFollowedGames() { return followedGames; }
 
@@ -48,7 +48,7 @@ public class User implements UserDetails{
     public void setUsername(String username) { this.username = username; }
     public void setPassword(String password) { this.password = password; }
     public void setFollowedGames(List<String> followedGames) { this.followedGames = followedGames;}
-    public void setProfilePicture(String Profilepic) {this.profilepic = profilepic;}//I'll come back to this, should be an img file.}
+    public void setProfilePicture(String profilePic) {this.profilePic = profilePic;}
     
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities(){return Collections.emptyList();}

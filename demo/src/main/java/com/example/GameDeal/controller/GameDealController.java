@@ -39,9 +39,14 @@ public class GameDealController {
         this.cheapSharkService = cheapSharkService;
     }
     
-    @ModelAttribute("loggedIndUser")
+    @ModelAttribute("loggedInUser")
     public User getLoggedInUser(Authentication authentication) {
-    	if (authentication!=null&&authentication.isAuthenticated()) return (User) authentication.getPrincipal();
+    	if (authentication!=null&&authentication.isAuthenticated()) {
+    		Object Principal = authentication.getPrincipal();
+    		if (Principal instanceof User) {
+    			return (User) Principal;
+    		}
+    	}
     	return null;
     }
     
@@ -99,7 +104,7 @@ public class GameDealController {
         return "layout";  
     }
     
-    @PostConstruct // Test to check if gameIDS are being added properly on launch.
+    /*@PostConstruct // Test to check if gameIDS are being added properly on launch.
     public void checkGameIds() {
         List<GameDeals> games = gameDealsRepository.findAll();
         
@@ -110,6 +115,6 @@ public class GameDealController {
                 System.out.println("Game: " + game.getTitle() + " | ID: " + game.getId());
             }
         }
-    }
+    }*/
     
 }

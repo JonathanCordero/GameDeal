@@ -42,12 +42,12 @@ public class UserRegistrationController {
 	            return "layout";
 	        }
 	        String secure = passwordEncoder.encode(password);
-	        User newUser = new User(username, email, secure); // future iterations should hash the password for security protection.
+	        User newUser = new User(username, email, secure);
 	        String token = pendingUserService.savePendingUser(newUser);
 	        String verificationLink = "http://localhost:8080/deals/verify?token=" + token;
 	        emailService.sendVerificationEmail(email, token, verificationLink);
 
-	        return "redirect:/deals/email-sent";
+	        return "redirect:/deals/emailSent";
 	    }
 	 
 	 @GetMapping("/verify")
@@ -60,11 +60,22 @@ public class UserRegistrationController {
 			 return "layout";
 		 }
 		 
+		 if (userRepository.findByUsername(verifiedUser.getUsername()).isPresent() || userRepository.findByEmail(verifiedUser.getEmail()).isPresent()) {
+			 model.addAttribute("error", "Verification failed or has expired");
+			 model.addAttribute("contentTemplate", "VerificationFailed");
+			 return "layout";
+		 }
+				 
 		 userRepository.save(verifiedUser);
 		 
 		 model.addAttribute("username", verifiedUser.getUsername());
 		 model.addAttribute("contentTemplate", "verificationSuccess");
 		 return "layout";
+	 }
+	 
+	 @GetMapping("/emailSent")
+	 public String showEmailSentPage() {
+		return "emailSent"; 
 	 }
 	
 }
