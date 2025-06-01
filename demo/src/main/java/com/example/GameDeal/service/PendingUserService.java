@@ -23,6 +23,7 @@ public class PendingUserService {
 	}
 	
 	public User confirmUser(String token) {
+		System.out.println("Confirming token: " + token);
 		PendingUser pendingUser = tokenForUser.remove(token);
 		if (pendingUser != null && !pendingUser.isExpired(Expiration_Time_Millis)) return pendingUser.getUser();
 		return null;

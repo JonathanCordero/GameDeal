@@ -2,6 +2,7 @@ package com.example.GameDeal.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.GameDeal.model.GameDeals;
 import com.example.GameDeal.model.User;
 import com.example.GameDeal.repository.GameDealsRepository;
+import com.example.GameDeal.repository.UserRepository;
 import com.example.GameDeal.service.CheapSharkService;
 
 import jakarta.annotation.PostConstruct;
@@ -34,6 +36,8 @@ public class GameDealController {
 	
 	@Autowired
 	private GameDealsRepository gameDealsRepository;
+	@Autowired
+	private UserRepository userRepository;
 	
     public GameDealController(CheapSharkService cheapSharkService) {
         this.cheapSharkService = cheapSharkService;
@@ -43,15 +47,27 @@ public class GameDealController {
     public User getLoggedInUser(Authentication authentication) {
     	if (authentication!=null&&authentication.isAuthenticated()) {
     		Object Principal = authentication.getPrincipal();
-    		if (Principal instanceof User) {
-    			return (User) Principal;
+    		if (Principal instanceof UserDetails) {
+    			String username = ((UserDetails)Principal).getUsername();
+    			return userRepository.findByUsername(username).orElseGet(()->userRepository.findByEmail(username).orElse(null));
     		}
     	}
     	return null;
     }
     
     @GetMapping("/gamelist")
-    public String getGameList(Model model) {
+    public String getGameList(Authentication authentication, Model model) {
+    	if (authentication != null && authentication.isAuthenticated()) {
+            Object principal = authentication.getPrincipal();
+
+            if (principal instanceof com.example.GameDeal.model.User user) {
+                model.addAttribute("loggedInUser", user);
+                System.out.println("Logged in as: " + user.getUsername());
+            } else {
+                System.out.println("Principal is not an instance of your User class");
+            }
+        }
+    	
         List<GameDeals> games = cheapSharkService.fetchAndSaveGameDeals(); //This should fetch and then save the games into a repository now.
         Map<String, GameDeals> cheapestDeals = new HashMap<>();
 

@@ -52,21 +52,24 @@ public class UserRegistrationController {
 	 
 	 @GetMapping("/verify")
 	 public String verifyUser(@RequestParam("token") String token, Model model) {
+		 System.out.println("Token received: " + token);
 		 User verifiedUser = pendingUserService.confirmUser(token);
+		 System.out.println("Verified user: " + (verifiedUser != null ? verifiedUser.getUsername() : "null"));
 		 
 		 if (verifiedUser == null) {
 			 model.addAttribute("error", "Verification failed or has expired");
-			 model.addAttribute("contentTemplate", "VerificationFailed");
+			 model.addAttribute("contentTemplate", "verificationFailed");
 			 return "layout";
 		 }
 		 
 		 if (userRepository.findByUsername(verifiedUser.getUsername()).isPresent() || userRepository.findByEmail(verifiedUser.getEmail()).isPresent()) {
 			 model.addAttribute("error", "Verification failed or has expired");
-			 model.addAttribute("contentTemplate", "VerificationFailed");
+			 model.addAttribute("contentTemplate", "verificationFailed");
 			 return "layout";
 		 }
-				 
+		 System.out.println("Saving to DB: " + verifiedUser.getUsername()); 
 		 userRepository.save(verifiedUser);
+		 System.out.println("Saving to DB: " + verifiedUser.getUsername());
 		 
 		 model.addAttribute("username", verifiedUser.getUsername());
 		 model.addAttribute("contentTemplate", "verificationSuccess");

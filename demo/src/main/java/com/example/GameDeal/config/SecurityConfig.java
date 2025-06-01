@@ -22,7 +22,7 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-		return http.authorizeHttpRequests(auth -> auth.requestMatchers("/deals/newUser","/deals/newUser/**","/deals/verify/**",
+		return http.authorizeHttpRequests(auth -> auth.requestMatchers("/deals/verify","/deals/newUser","/deals/newUser/**","/deals/verify/**",
 				"/deals/emailSent","/deals/gamelist","/css/**","/js/**").permitAll().anyRequest().authenticated())
 				.formLogin(form -> form.loginPage("/deals/login").defaultSuccessUrl("/deals/gamelist",true).permitAll())
 				.logout(logout -> logout.permitAll()).csrf(csrf -> csrf.disable()).build();
