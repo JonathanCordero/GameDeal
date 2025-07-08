@@ -18,8 +18,6 @@ import com.example.GameDeal.repository.GameDealsRepository;
 import com.example.GameDeal.repository.UserRepository;
 import com.example.GameDeal.service.CheapSharkService;
 
-import jakarta.annotation.PostConstruct;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -43,17 +41,6 @@ public class GameDealController {
         this.cheapSharkService = cheapSharkService;
     }
     
-    @ModelAttribute("loggedInUser")
-    public User getLoggedInUser(Authentication authentication) {
-    	if (authentication!=null&&authentication.isAuthenticated()) {
-    		Object Principal = authentication.getPrincipal();
-    		if (Principal instanceof UserDetails) {
-    			String username = ((UserDetails)Principal).getUsername();
-    			return userRepository.findByUsername(username).orElseGet(()->userRepository.findByEmail(username).orElse(null));
-    		}
-    	}
-    	return null;
-    }
     
     @GetMapping("/gamelist")
     public String getGameList(Authentication authentication, Model model) {
@@ -106,18 +93,6 @@ public class GameDealController {
         } else {
             return "redirect:/deals/gamelist";
         }
-    }
-    
-    @GetMapping("/login")
-    public String showLoginPage(Model model) {
-    	model.addAttribute("contentTemplate", "login");
-        return "layout";
-    }
-    
-    @PostMapping("/login")
-    public String handleLogin(@RequestParam String username, @RequestParam String password, Model model) {
-        model.addAttribute("contentTemplate", "success");
-        return "layout";  
     }
     
     /*@PostConstruct // Test to check if gameIDS are being added properly on launch.

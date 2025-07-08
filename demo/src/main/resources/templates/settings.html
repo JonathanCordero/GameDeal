@@ -1,0 +1,12 @@
+<div th:fragment="content">
+    <h2 class="text-center">User Settings</h2>
+	<form th:action="@{/deals/settings}" method="post" enctype="multipart/form-data">
+		<input type = "file" name="profilePic" accept="image/*"/>
+		<input type = "password" name="currentPassword" placeholder="Current Password" required/>
+		<input type = "email" name="newEmail" placeholder="New Email"/>
+		<button type="submit">Update</button>
+	</form>
+	<div th:if="${successMessage}" class="alert alert-success mt-3">
+		<p th:text="${successMessage}"></p>
+	</div>
+</div>

@@ -14,10 +14,20 @@
                 <input class="form-control me-2" type="search" placeholder="Search games..." aria-label="Search">
                 <button class="btn btn-outline-light" type="submit">Search</button>
             </form>
-			<div th:if="${loggedInUser!=null}">
-				<img th:src="${loggedInUser.profilePic}" alt ="Profile Picture" style="width: 40px; height: 40px; border-radius: 50%;">
-				<span th:text="${loggedInUser.username}" class="text-light ms-2">Username</span>
-				<a href="/logout">Logout</a>
+			<div th:if="${loggedInUser!=null}" class="d-flex align-items-center ms-auto">
+				<img th:src="${loggedInUser.profilePic}" alt ="Profile Picture" style="width: 40px; height: 40px; border-radius: 50%; margin-right:10px;">
+				<div class="dropdown">
+					<button class="btn btn-secondary dropdown-toggle" type = "button" id ="dropdownMenuButton" 
+					data-bs-toggle="dropdown" aria-expanded="false" th:text="${loggedInUser.username">
+						Username
+					</button>
+					<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+						<li><a class="dropdown-item" href="/wishlsit">Wishlist</a></li>
+						<li><a class="dropdown-item"href="/Settings">Settings</a></li>
+						<li><a class="dropdown-item" href="/logout">Logout</a></li>
+					</ul>
+				</div>
+				
 			</div>
 			
             <div th:if="${loggedInUser==null}">

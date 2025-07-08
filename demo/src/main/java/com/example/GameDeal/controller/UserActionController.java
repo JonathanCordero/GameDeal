@@ -1,13 +1,17 @@
 package com.example.GameDeal.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.GameDeal.config.SecurityConfig;
 import com.example.GameDeal.model.User;
@@ -17,7 +21,7 @@ import com.example.GameDeal.service.PendingUserService;
 
 @Controller
 @RequestMapping("/deals")
-public class UserRegistrationController {
+public class UserActionController {
 
 	@Autowired
 	private UserRepository userRepository;
@@ -27,6 +31,19 @@ public class UserRegistrationController {
 	private EmailService emailService;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
+	
+	@ModelAttribute("loggedInUser")
+    public User getLoggedInUser(Authentication authentication) {
+    	if (authentication!=null&&authentication.isAuthenticated()) {
+    		Object Principal = authentication.getPrincipal();
+    		if (Principal instanceof UserDetails) {
+    			String username = ((UserDetails)Principal).getUsername();
+    			return userRepository.findByUsername(username).orElseGet(()->userRepository.findByEmail(username).orElse(null));
+    		}
+    	}
+    	return null;
+    }
 	
 	@GetMapping("/newUser")
 	public String showNewUserPage(Model model) {
@@ -80,5 +97,54 @@ public class UserRegistrationController {
 	 public String showEmailSentPage() {
 		return "emailSent"; 
 	 }
+	 
+	 @GetMapping("/settings")
+	    public String showSettings(Model model, Authentication authentication) {
+	    	model.addAttribute("user", getLoggedInUser(authentication));
+	    	model.addAttribute("contentTemplate","settings");
+	    	return "layout";
+	    }
+	    
+	    @PostMapping("/settings")
+	    public String updateUserSettings(@RequestParam("currentPassword") String currentPassword, 
+	    		@RequestParam(value="profilePic", required=false) MultipartFile profilePic,
+	    		@RequestParam(value="newPassword", required = false) String newPassword, 
+	    		@RequestParam(value="newEmail", required=false) String newEmail, Authentication authentication, Model model ) {
+	    	User user = getLoggedInUser(authentication);
+	    	if(user==null || !passwordEncoder.matches(currentPassword,user.getPassword()))
+	    	if(user!=null) {
+	    		user.setPassword(newPassword);
+	    		user.setProfilePic(profilePic);
+	    		userRepository.save(user);
+	    		model.addAttribute("Success Message", "Profile updated Successfully!");
+	    	}
+	    	
+	    	model.addAttribute("user",user);
+	    	model.addAttribute("contentTemplate","settings");
+	    	return "layout";
+	    }
+	    
+	    @GetMapping("/wishlist")
+	    public String showWishlist(Model model, Authentication authentication) {
+	    	model.addAttribute("user", getLoggedInUser(authentication));
+	    	return "wishlist";
+	    }
+	    
+	    @GetMapping("/login")
+	    public String showLoginPage(Model model) {
+	    	model.addAttribute("contentTemplate", "login");
+	        return "layout";
+	    }
+	    
+	    @PostMapping("/login")
+	    public String handleLogin(@RequestParam String username, @RequestParam String password, Model model) {
+	        model.addAttribute("contentTemplate", "success");
+	        return "layout";  
+	    }
+	    
+	    @GetMapping("/logout")
+	    public String logout() {
+	    	return "layout";
+	    }
 	
 }
