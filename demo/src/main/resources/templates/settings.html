@@ -1,10 +1,12 @@
 <div th:fragment="content">
     <h2 class="text-center">User Settings</h2>
 	<form th:action="@{/deals/settings}" method="post" enctype="multipart/form-data">
-		<input type = "file" name="profilePic" accept="image/*"/>
+		<label for="profilePic">Upload new Profile Picture:</label>
+		<input type = "file" name="profilePic" class="form-control" accept="image/*"/>
 		<input type = "password" name="currentPassword" placeholder="Current Password" required/>
+		<input type = "newPassword" name = "newPassword" placeholder="newPassword"/>
 		<input type = "email" name="newEmail" placeholder="New Email"/>
-		<button type="submit">Update</button>
+		<button type="submit" class="btn btn-primary">Update</button>
 	</form>
 	<div th:if="${successMessage}" class="alert alert-success mt-3">
 		<p th:text="${successMessage}"></p>

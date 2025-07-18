@@ -22,8 +22,12 @@ public class User implements UserDetails{
 	private String username;
 	 @Column(nullable = false)
 	private String password;
-	 @Column(nullable = false)
-	public String profilePic = "/img/defaultProfilePic.png";
+	 
+	@Lob
+	@Column(name = "profile_pic", columnDefinition = "LONGBLOB")
+	public byte [] profilePic;
+	@Column(name = "profile_pic_type")
+	public String profilePicType;
 	
 	@ElementCollection
 	private List<String> followedGames;
@@ -41,7 +45,8 @@ public class User implements UserDetails{
 	public Long getId() { return id; }
     public String getEmail() { return email; }
     public String getPassword() { return password; }
-    public String getProfilePic() {return profilePic;}
+    public byte[] getProfilePic() {return profilePic;}
+    public String getProfilePicType() {return profilePicType;}
     
     public List<String> getFollowedGames() { return followedGames; }
 
@@ -49,7 +54,8 @@ public class User implements UserDetails{
     public void setUsername(String username) { this.username = username; }
     public void setPassword(String password) { this.password = password; }
     public void setFollowedGames(List<String> followedGames) { this.followedGames = followedGames;}
-    public void setProfilePic(String profilePic) {this.profilePic = profilePic;}
+    public void setProfilePic(byte[] profilePic) {this.profilePic = profilePic;}
+    public void setProfilePicType(String profilePicType) {this.profilePicType=profilePicType;}
     
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities(){return Collections.emptyList();}

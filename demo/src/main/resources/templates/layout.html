@@ -15,15 +15,14 @@
                 <button class="btn btn-outline-light" type="submit">Search</button>
             </form>
 			<div th:if="${loggedInUser!=null}" class="d-flex align-items-center ms-auto">
-				<img th:src="${loggedInUser.profilePic}" alt ="Profile Picture" style="width: 40px; height: 40px; border-radius: 50%; margin-right:10px;">
+				<img th:src="@{/deals/profilePic/{id}(id=${loggedInUser.id})}" alt ="" style="width: 40px; height: 40px; border-radius: 50%; margin-right:10px;">
 				<div class="dropdown">
 					<button class="btn btn-secondary dropdown-toggle" type = "button" id ="dropdownMenuButton" 
-					data-bs-toggle="dropdown" aria-expanded="false" th:text="${loggedInUser.username">
-						Username
+					data-bs-toggle="dropdown" aria-expanded="false" th:text="${loggedInUser.username}">
 					</button>
 					<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-						<li><a class="dropdown-item" href="/wishlsit">Wishlist</a></li>
-						<li><a class="dropdown-item"href="/Settings">Settings</a></li>
+						<li><a class="dropdown-item" href="/wishlist">Wishlist</a></li>
+						<li><a class="dropdown-item" th:href="@{/deals/settings}">Settings</a></li>
 						<li><a class="dropdown-item" href="/logout">Logout</a></li>
 					</ul>
 				</div>
@@ -38,6 +37,10 @@
 
     <div class="container mt-4">
 		<div th:replace="~{${contentTemplate}::content}"></div>
+		<div class="container mt-3">
+			<div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+			<div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+		</div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
