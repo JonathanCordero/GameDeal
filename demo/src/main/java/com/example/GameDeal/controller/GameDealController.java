@@ -80,6 +80,8 @@ public class GameDealController {
         Optional<GameDeals> game = gameDealsRepository.findById(id);
         if (game.isPresent()) {
             model.addAttribute("game", game.get());
+            List<GameDeals>otherOptions = gameDealsRepository.findByTitle(game.get().getTitle());
+            model.addAttribute("otherOptions",otherOptions);
             model.addAttribute("contentTemplate", "gamedetails");
             return "layout"; 
         } else {

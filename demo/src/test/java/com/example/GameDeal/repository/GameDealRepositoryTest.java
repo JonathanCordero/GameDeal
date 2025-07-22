@@ -1,6 +1,9 @@
 package com.example.GameDeal.repository;
 
 import com.example.GameDeal.model.GameDeals;
+import com.example.GameDeal.model.Store;
+import com.example.GameDeal.model.StoreImages;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -22,7 +25,7 @@ public class GameDealRepositoryTest {
     @Test
     public void testSaveAndFindAll() {
         // Arrange: Create a game deal and save it
-        GameDeals gameDeal = new GameDeals("Elden Ring", "Steam", 59.99, 39.99, "https://steam.com/eldenring");
+        GameDeals gameDeal = new GameDeals("Elden Ring", 59.99, 39.99, "https://steam.com/eldenring", "1");
         gameDealRepository.save(gameDeal);
 
         // Act: Retrieve all deals from the database
@@ -37,11 +40,11 @@ public class GameDealRepositoryTest {
     @Test
     public void testFindByStore() {
         // Arrange: Add two game deals
-        gameDealRepository.save(new GameDeals("Cyberpunk 2077", "Steam", 59.99, 29.99, "https://steam.com/cyberpunk"));
-        gameDealRepository.save(new GameDeals("The Witcher 3", "GOG", 39.99, 9.99, "https://gog.com/witcher3"));
+        gameDealRepository.save(new GameDeals("Cyberpunk 2077", 59.99, 29.99, "https://steam.com/cyberpunk", "2"));
+        gameDealRepository.save(new GameDeals("The Witcher 3", 39.99, 9.99, "https://gog.com/witcher3", "1"));
 
         // Act: Find all deals for Steam
-        List<GameDeals> steamDeals = gameDealRepository.findByStore("Steam");
+        List<GameDeals> steamDeals = gameDealRepository.findByStore(new Store("1","Steam",new StoreImages()));
 
         // Assert: Verify only Steam deals are returned
         assertThat(steamDeals).hasSize(1);

@@ -2,10 +2,13 @@ package com.example.GameDeal.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity 
@@ -17,24 +20,26 @@ public class GameDeals {
     private Long id;
 
     private String title;
-    private String store;
     private double normalPrice;
     private double salePrice;
     private String thumb;
+    @Column(unique = true)
     private String dealID;
     private String storeID;
     private String gameID;
-
+    @ManyToOne
+    @JoinColumn(name = "store_id", referencedColumnName = "storeID")
+    private Store store;
    
     public GameDeals() {}
 
     
-    public GameDeals(String title, String store, double normalPrice, double salePrice, String thumb) {
+    public GameDeals(String title, double normalPrice, double salePrice, String thumb, String storeID) {
         this.title = title;
-        this.store = store;
         this.normalPrice = normalPrice;
         this.salePrice = salePrice;
         this.thumb = thumb;
+        this.storeID=storeID;
     }
 
     
@@ -43,9 +48,6 @@ public class GameDeals {
 
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
-
-    public String getStore() { return store; }
-    public void setStore(String store) { this.store = store; }
 
     public double getNormalPrice() { return normalPrice; }
     public void setNormalPrice(double normalPrice) { this.normalPrice = normalPrice; }
@@ -64,4 +66,7 @@ public class GameDeals {
 
     public String getGameID() { return gameID; }
     public void setGameID(String gameID) { this.gameID = gameID; }
+    
+    public Store getStore() {return store;}
+    public void setStore(Store store) {this.store=store;}
 }

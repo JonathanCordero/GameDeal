@@ -2,9 +2,39 @@
 	<div class="container mt-4">
 	 	<h1 class="text-center" th:text="${game.title}">Game Title</h1>
         <img th:src="${game.thumb}" class="img-fluid" alt="Game Thumbnail">
-        <p><strong>Store:</strong> <span th:text="${game.store}"></span></p>
+        <p><strong>Store:</strong> <span th:text="${game.store.storeName}"></span>
+			<img th:if="${game.store != null}" 
+			th:src="@{'https://www.cheapshark.com' + ${game.store.images.banner}}" 
+			alt="Store Logo">
+		</p>
         <p><strong>Normal Price:</strong> $<span th:text="${#numbers.formatDecimal(game.normalPrice, 1, 2)}"></span></p>
         <p><strong>Sale Price:</strong> $<span th:text="${#numbers.formatDecimal(game.salePrice, 1, 2)}"></span></p>
-		<a href="/deals/gamelist" class="btn btn-primary">Back to List</a>
+		<a th:href="'https://www.cheapshark.com/redirect?dealID=' + ${game.dealID}" target="_blank">
+		    View Deal on CheapShark
+		</a>
+		
+		<h2> Other Options for <span th:text="${game.title}"></span></h2>
+		<table>
+			<thead>
+				<tr>
+					<th>Store</th>
+					<th>Price</th>
+					<th>Link</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="deal : ${otherOptions}">
+					<td th:text="${deal.store.storeName}">Store Name</td>
+					<td th:text="${deal.salePrice}">0.00</td>
+					<td>
+						<a th:href="'https://www.cheapshark.com/redirect?dealID=' + ${deal.dealID}" target="_blank">
+							View Deal
+						</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+<a href="/deals/gamelist" class="btn btn-primary">Back to List</a>
 	</div>
 </div>
