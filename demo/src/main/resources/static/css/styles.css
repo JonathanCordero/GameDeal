@@ -1,0 +1,14 @@
+table.game-details-table{
+	width:100%;
+	border-collapse: collapse;
+}
+
+.game-detail-table th,
+.game-detail-table td{
+	padding:12px 20px;
+	text-align: left;
+}
+
+.game-detail-table th{
+	background-color:slateblue;
+}
