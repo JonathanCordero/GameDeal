@@ -1,0 +1,12 @@
+<div th:fragment="content">
+	<div class="container m-4">
+		<h1 class="text-center" text="Wishlist"></h1>
+		<table class="wishlist-table">
+			<tbody>
+				<tr th:each="game : ${wishlist}">
+					<td th:text="${game.name}"> Wishlisted item</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
